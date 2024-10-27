@@ -1,13 +1,14 @@
 import { Button } from "@nextui-org/button";
 import Image from "next/image";
+import Header from "./_components/Header";
 
 export default function Home() {
   return (
     <div>
-      hey
-      <Button color="primary">
-        Subscribe
-      </Button>
+      {/* header */}
+      <Header />
+
+      {/* hero */}
     </div>
   );
 }
