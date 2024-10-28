@@ -1,11 +1,15 @@
+import { ClerkProvider } from '@clerk/nextjs'
 import { NextUIProvider } from '@nextui-org/react'
 import React from 'react'
 
 function Provider({children}: {children: React.ReactNode}) {
   return (
-    <NextUIProvider>
+    <ClerkProvider>
+      <NextUIProvider>
         {children}
-    </NextUIProvider>
+      </NextUIProvider>
+    </ClerkProvider>
+    
   )
 }
 

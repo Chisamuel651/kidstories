@@ -9,6 +9,9 @@ const MyAppFont = Nunito({subsets: ['latin']});
 export const metadata: Metadata = {
   title: "KidStories",
   description: "Create adventure stories to spark your kids comprehension",
+  icons:{
+    icon: '/logo.svg'
+  }
 };
 
 export default function RootLayout({
