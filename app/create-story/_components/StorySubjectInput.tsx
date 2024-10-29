@@ -4,7 +4,7 @@ import React from 'react'
 function StorySubjectInput({userSelection}:any) {
   return (
     <div>
-      <label className='font-bold text-4xl text-primary'>1. Subject of the story</label>
+      <label className='font-bold text-3xl md:text-4xl text-primary'>1. Subject of the story</label>
       <Textarea 
         placeholder='write the subject of the story which you want to generate'
         size='lg'
