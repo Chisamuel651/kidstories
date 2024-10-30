@@ -5,6 +5,13 @@ import StoryType from './_components/StoryType'
 import AgeGroup from './_components/AgeGroup'
 import ImageStyle from './_components/ImageStyle'
 import { Button } from '@nextui-org/button'
+import { chatSession } from '@/config/GeminiAi'
+import { StoryData } from '@/config/schema'
+import { db } from '@/config/db'
+// @ts-ignore
+import uuid4 from "uuid4";
+
+const CREATE_STORY_PROMPT=process.env.NEXT_PUBLIC_CREATE_STORY_PROMPT
 
 export interface fieldData{
   fieldName: string,
@@ -21,6 +28,7 @@ export interface formDataType{
 function CreateStory() {
 
   const [formData, setFormData] = useState<formDataType>()
+  const [loading, setLoading] = useState(false)
 
   /**
    * used to add data to form
@@ -29,16 +37,58 @@ function CreateStory() {
    */
 
   const onHandleUserSelection=(data: fieldData) => {
-    // console.log(data)
-    // if(formData?.storySubject||formData?.ageGroup||formData?.storyType||formData?.imageStyle){
-      
-    // }
     setFormData((prev:any) => ({
       ...prev,
       [data.fieldName]: data.fieldValue
     }));
 
     console.log(formData)
+  }
+
+  const GenerateStory = async () => {
+    setLoading(true)
+    const FINAL_PROMPT=CREATE_STORY_PROMPT
+    ?.replace('{ageGroup}', formData?.ageGroup??'')
+    .replace('{storyType}', formData?.storyType??'')
+    .replace('{imageStyle}', formData?.imageStyle??'')
+    .replace('{storySubject}', formData?.storySubject??'')
+    // generate AI story
+    try {
+      // console.log(FINAL_PROMPT);
+      
+      const result = await chatSession.sendMessage(FINAL_PROMPT)
+      console.log(result?.response.text());
+      const resp = await saveInDB(result?.response.text())
+      console.log(resp)
+      setLoading(false)
+      
+    } catch (e) {
+      console.log(e);
+      setLoading(false)
+    }
+    // save in db
+
+    // generate the image
+  }
+
+  const saveInDB = async (output:string) => {
+    const recordId = uuid4();
+    setLoading(true)
+    try {
+      const result = await db.insert(StoryData).values({
+        storyId: recordId,
+        ageGroup: formData?.ageGroup,
+        imageType: formData?.imageStyle,
+        storySubject: formData?.storySubject,
+        storyType: formData?.storyType,
+        output: JSON.parse(output)
+      }).returning({storyId: StoryData?.storyId})
+      setLoading(false)
+      return result;
+    } catch (e) {
+      console.log(e);
+      setLoading(false)
+    }
   }
 
   return (
@@ -62,7 +112,7 @@ function CreateStory() {
       </div>
 
       <div className='flex justify-center md:justify-end my-10'>
-        <Button className='p-10 text-2xl' color='primary'>Generate Story</Button>
+        <Button disabled={loading} onClick={GenerateStory} className='p-10 text-2xl' color='primary'>Generate Story</Button>
       </div>
     </div>
   )
