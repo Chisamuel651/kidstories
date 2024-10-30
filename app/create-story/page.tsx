@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import StorySubjectInput from './_components/StorySubjectInput'
 import StoryType from './_components/StoryType'
 import AgeGroup from './_components/AgeGroup'
@@ -11,10 +11,34 @@ export interface fieldData{
   fieldValue: string
 }
 
+export interface formDataType{
+  storySubject: string,
+  storyType: string,
+  ageGroup: string,
+  imageStyle: string
+}
+
 function CreateStory() {
 
+  const [formData, setFormData] = useState<formDataType>()
+
+  /**
+   * used to add data to form
+   * @param data 
+   * 
+   */
+
   const onHandleUserSelection=(data: fieldData) => {
-    console.log(data)
+    // console.log(data)
+    // if(formData?.storySubject||formData?.ageGroup||formData?.storyType||formData?.imageStyle){
+      
+    // }
+    setFormData((prev:any) => ({
+      ...prev,
+      [data.fieldName]: data.fieldValue
+    }));
+
+    console.log(formData)
   }
 
   return (
