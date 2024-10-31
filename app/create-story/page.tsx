@@ -10,6 +10,7 @@ import { StoryData } from '@/config/schema'
 import { db } from '@/config/db'
 // @ts-ignore
 import uuid4 from "uuid4";
+import CustomLoader from './_components/CustomLoader'
 
 const CREATE_STORY_PROMPT=process.env.NEXT_PUBLIC_CREATE_STORY_PROMPT
 
@@ -114,6 +115,8 @@ function CreateStory() {
       <div className='flex justify-center md:justify-end my-10'>
         <Button disabled={loading} onClick={GenerateStory} className='p-10 text-2xl' color='primary'>Generate Story</Button>
       </div>
+
+      <CustomLoader isLoading={loading} />
     </div>
   )
 }
