@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
     };
 
     const output:any = await replicate.run("black-forest-labs/flux-schnell", { input });
-    console.log("Replicate output:", output);
+    console.log(output);
 
     // for (const [index, item] of Object.entries(output)) {
     // await writeFile(`output_${index}.webp`, item);

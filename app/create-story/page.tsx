@@ -64,7 +64,7 @@ function CreateStory() {
       console.log(result?.response.text());
       const imageResp = await axios.post('/api/generate-image', {
         prompt: 'Add text with title:'+story?.story_name+" in bold text for book cover, "+story?.cover_image?.description
-      })
+      });
 
       console.log(imageResp?.data);
       
